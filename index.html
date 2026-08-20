@@ -16,10 +16,10 @@
   <section class="home-hero">
     <div class="home-hero-visual" aria-hidden="true">
       <div class="home-hero-panel">
-        <img src="image/intro-kaifeng.jpg" alt="">
+        <img src="image/intro-kaifeng.jpg" alt="" decoding="async" fetchpriority="high">
       </div>
       <div class="home-hero-panel">
-        <img src="image/intro-hangzhou.jpg" alt="">
+        <img src="image/intro-hangzhou.jpg" alt="" decoding="async" fetchpriority="high">
       </div>
       <div class="home-hero-veil"></div>
     </div>
@@ -43,7 +43,7 @@
 
   <section class="home-cities">
     <a class="home-city home-city--kf" href="map.html?city=kaifeng">
-      <img src="image/intro-kaifeng.jpg" alt="开封铁塔">
+      <img src="image/thumbs/intro-kaifeng.jpg" alt="开封铁塔" loading="lazy" decoding="async">
       <div class="home-city-veil"></div>
       <div class="home-city-copy">
         <span>北宋都城</span>
@@ -52,7 +52,7 @@
       </div>
     </a>
     <a class="home-city home-city--hz" href="map.html?city=hangzhou">
-      <img src="image/intro-hangzhou.jpg" alt="杭州六和塔">
+      <img src="image/thumbs/intro-hangzhou.jpg" alt="杭州六和塔" loading="lazy" decoding="async">
       <div class="home-city-veil"></div>
       <div class="home-city-copy">
         <span>南宋都城</span>
@@ -71,5 +71,12 @@
   <footer class="home-foot">
     <span>开封 · 杭州 · 城市更新中的文化传承</span>
   </footer>
+  <script src="js/config.js"></script>
+  <script>
+    document.querySelectorAll('img[src]').forEach(function (img) {
+      var s = img.getAttribute('src');
+      if (s && s.indexOf('http') !== 0) img.src = assetUrl(s);
+    });
+  </script>
 </body>
 </html>

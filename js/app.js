@@ -20,19 +20,32 @@
 
   function poiThumb(poi) {
     const src = (poi && poi.image) || '';
-    return src.replace(/^image\//, 'image/thumbs/');
+    return assetUrl(src.replace(/^image\//, 'image/thumbs/'));
+  }
+
+  function poiPin(poi) {
+    const src = (poi && poi.image) || '';
+    return assetUrl(src.replace(/^image\//, 'image/pins/'));
+  }
+
+  function poiFull(poi) {
+    return assetUrl((poi && poi.image) || '');
   }
 
   function safeImg(src, fallback, alt, className) {
-    const fb = fallback || 'image/thumbs/brand-logo.jpg';
+    const fb = assetUrl(fallback || 'image/thumbs/brand-logo.jpg');
     const cls = className ? ` class="${className}"` : '';
-    return `<img${cls} src="${src}" alt="${alt || ''}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${fb}'">`;
+    const url = assetUrl(src);
+    return `<img${cls} src="${url}" alt="${alt || ''}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${fb}'">`;
   }
 
   function init() {
     const params = new URLSearchParams(location.search);
     const city = params.get('city');
     if (city === 'kaifeng' || city === 'hangzhou') currentCity = city;
+
+    const logo = document.querySelector('.brand-logo');
+    if (logo && logo.getAttribute('src')) logo.src = assetUrl(logo.getAttribute('src'));
 
     bindEvents();
     updateFilterCounts();
@@ -183,7 +196,7 @@
       <div class="poi-photo-marker">
         <div class="poi-photo-pin ${typeClass}">
           <div class="poi-photo-head">
-            ${safeImg(poiThumb(poi), poi.image, poi.name, '')}
+            ${safeImg(poiPin(poi), poiThumb(poi), poi.name, '')}
           </div>
           <span class="poi-photo-index">${num}</span>
         </div>
@@ -285,7 +298,7 @@
 
     const imgWrap = document.createElement('div');
     imgWrap.className = 'ancient-img-wrap';
-    imgWrap.innerHTML = `<img class="ancient-map-img" src="${mapData.image}" alt="${mapData.title}" draggable="false">`;
+    imgWrap.innerHTML = `<img class="ancient-map-img" src="${assetUrl(mapData.image)}" alt="${mapData.title}" draggable="false">`;
 
     const pinsLayer = document.createElement('div');
     pinsLayer.className = 'ancient-pins-layer';
@@ -564,7 +577,7 @@
 
   function showBottomSheet(poi) {
     const thumb = $('#sheet-thumb');
-    thumb.onerror = function () { this.onerror = null; this.src = 'image/thumbs/brand-logo.jpg'; };
+    thumb.onerror = function () { this.onerror = null; this.src = assetUrl('image/thumbs/brand-logo.jpg'); };
     thumb.src = poiThumb(poi);
     thumb.alt = poi.name;
     $('#sheet-name').textContent = poi.name;
@@ -594,7 +607,7 @@
       const isRenewal = poi.category === 'renewal';
       return `
         <div class="poi-item" data-id="${poi.id}">
-          ${safeImg(poiThumb(poi), poi.image, poi.name, 'poi-item-thumb')}
+          ${safeImg(poiThumb(poi), poiFull(poi), poi.name, 'poi-item-thumb')}
           <div class="poi-item-body">
             <div class="poi-item-title">
               <span class="idx ${isRenewal ? 'renewal' : ''}">${getPoiDisplayIndex(poi.id, currentCity)}</span>
@@ -628,7 +641,7 @@
     if (!poi) return;
     const hero = $('#detail-hero-img');
     hero.onerror = function () { this.onerror = null; this.src = poiThumb(poi); };
-    hero.src = poi.image;
+    hero.src = poiFull(poi);
     $('#detail-hero-title').textContent = poi.name;
     $('#detail-meta').innerHTML = `
       <span class="sheet-rating">★ ${poi.rating}</span>
@@ -728,7 +741,7 @@
       const num = getPoiDisplayIndex(p.id, p.cityKey);
       return `
         <div class="search-item" data-id="${p.id}" data-city="${p.cityKey}" role="option">
-          ${safeImg(poiThumb(p), p.image, p.name, 'search-item-thumb')}
+          ${safeImg(poiThumb(p), poiFull(p), p.name, 'search-item-thumb')}
           <div class="search-item-info">
             <div class="search-item-name"><span class="search-item-num">${num}</span>${p.name}</div>
             <div class="search-item-addr">${p.cityName} · ${p.address}</div>
@@ -798,7 +811,7 @@
 
     results.innerHTML = matched.map(p => `
       <div class="search-item" data-id="${p.id}" data-city="${p.cityKey}">
-        ${safeImg(poiThumb(p), p.image, p.name, 'search-item-thumb')}
+        ${safeImg(poiThumb(p), poiFull(p), p.name, 'search-item-thumb')}
         <div class="search-item-info">
           <div class="search-item-name">${p.name}</div>
           <div class="search-item-addr">${p.cityName} · ${p.address}</div>
