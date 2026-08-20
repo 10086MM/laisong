@@ -18,6 +18,17 @@
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => document.querySelectorAll(sel);
 
+  function poiThumb(poi) {
+    const src = (poi && poi.image) || '';
+    return src.replace(/^image\//, 'image/thumbs/');
+  }
+
+  function safeImg(src, fallback, alt, className) {
+    const fb = fallback || 'image/thumbs/brand-logo.jpg';
+    const cls = className ? ` class="${className}"` : '';
+    return `<img${cls} src="${src}" alt="${alt || ''}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${fb}'">`;
+  }
+
   function init() {
     const params = new URLSearchParams(location.search);
     const city = params.get('city');
@@ -172,7 +183,7 @@
       <div class="poi-photo-marker">
         <div class="poi-photo-pin ${typeClass}">
           <div class="poi-photo-head">
-            <img src="${poi.image}" alt="${poi.name}" loading="lazy">
+            ${safeImg(poiThumb(poi), poi.image, poi.name, '')}
           </div>
           <span class="poi-photo-index">${num}</span>
         </div>
@@ -552,8 +563,10 @@
   }
 
   function showBottomSheet(poi) {
-    $('#sheet-thumb').src = poi.image;
-    $('#sheet-thumb').alt = poi.name;
+    const thumb = $('#sheet-thumb');
+    thumb.onerror = function () { this.onerror = null; this.src = 'image/thumbs/brand-logo.jpg'; };
+    thumb.src = poiThumb(poi);
+    thumb.alt = poi.name;
     $('#sheet-name').textContent = poi.name;
     $('#sheet-rating').textContent = poi.rating;
     $('#sheet-tags').innerHTML = poi.tags.map(t => {
@@ -581,7 +594,7 @@
       const isRenewal = poi.category === 'renewal';
       return `
         <div class="poi-item" data-id="${poi.id}">
-          <img class="poi-item-thumb" src="${poi.image}" alt="${poi.name}">
+          ${safeImg(poiThumb(poi), poi.image, poi.name, 'poi-item-thumb')}
           <div class="poi-item-body">
             <div class="poi-item-title">
               <span class="idx ${isRenewal ? 'renewal' : ''}">${getPoiDisplayIndex(poi.id, currentCity)}</span>
@@ -613,7 +626,9 @@
   function showDetail(poi) {
     if (!poi) poi = selectedPoi;
     if (!poi) return;
-    $('#detail-hero-img').src = poi.image;
+    const hero = $('#detail-hero-img');
+    hero.onerror = function () { this.onerror = null; this.src = poiThumb(poi); };
+    hero.src = poi.image;
     $('#detail-hero-title').textContent = poi.name;
     $('#detail-meta').innerHTML = `
       <span class="sheet-rating">★ ${poi.rating}</span>
@@ -713,7 +728,7 @@
       const num = getPoiDisplayIndex(p.id, p.cityKey);
       return `
         <div class="search-item" data-id="${p.id}" data-city="${p.cityKey}" role="option">
-          <img class="search-item-thumb" src="${p.image}" alt="">
+          ${safeImg(poiThumb(p), p.image, p.name, 'search-item-thumb')}
           <div class="search-item-info">
             <div class="search-item-name"><span class="search-item-num">${num}</span>${p.name}</div>
             <div class="search-item-addr">${p.cityName} · ${p.address}</div>
@@ -783,7 +798,7 @@
 
     results.innerHTML = matched.map(p => `
       <div class="search-item" data-id="${p.id}" data-city="${p.cityKey}">
-        <img class="search-item-thumb" src="${p.image}" alt="">
+        ${safeImg(poiThumb(p), p.image, p.name, 'search-item-thumb')}
         <div class="search-item-info">
           <div class="search-item-name">${p.name}</div>
           <div class="search-item-addr">${p.cityName} · ${p.address}</div>

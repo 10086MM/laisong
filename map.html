@@ -1,61 +1,61 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>地图探索 · 两宋文化地图</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <title>鍦板浘鎺㈢储 路 涓ゅ畫鏂囧寲鍦板浘</title>
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-map">
   <div id="app">
     <header class="site-header">
-      <a class="brand brand-link" href="index.html" title="返回首页">
-        <img class="brand-logo" src="image/brand-logo.jpg" alt="两宋文化">
+      <a class="brand brand-link" href="index.html" title="杩斿洖棣栭〉">
+        <img class="brand-logo" src="image/thumbs/brand-logo.jpg" alt="涓ゅ畫鏂囧寲">
         <div class="brand-text">
-          <h1>两宋文化地图</h1>
-          <p>城市更新中的文化传承 · 开封 · 杭州</p>
+          <h1>涓ゅ畫鏂囧寲鍦板浘</h1>
+          <p>鍩庡競鏇存柊涓殑鏂囧寲浼犳壙 路 寮€灏?路 鏉窞</p>
         </div>
       </a>
 
       <div class="header-search">
         <div id="search-box" class="search-box">
           <span class="search-icon" aria-hidden="true"></span>
-          <input id="search-input" type="text" placeholder="搜索宋文化景点、城市更新地标…" autocomplete="off">
-          <button id="search-clear" class="search-clear" type="button" title="清除" hidden>×</button>
+          <input id="search-input" type="text" placeholder="鎼滅储瀹嬫枃鍖栨櫙鐐广€佸煄甯傛洿鏂板湴鏍団€? autocomplete="off">
+          <button id="search-clear" class="search-clear" type="button" title="娓呴櫎" hidden>脳</button>
         </div>
         <div id="search-dropdown" class="search-dropdown" hidden></div>
       </div>
 
       <div class="header-actions">
         <div class="city-tabs">
-          <button class="city-tab active" data-city="kaifeng">开封 · 北宋</button>
-          <button class="city-tab" data-city="hangzhou">杭州 · 南宋</button>
+          <button class="city-tab active" data-city="kaifeng">寮€灏?路 鍖楀畫</button>
+          <button class="city-tab" data-city="hangzhou">鏉窞 路 鍗楀畫</button>
         </div>
         <div id="map-mode-bar" class="map-mode-bar">
           <button class="mode-tab active" data-mode="modern">
-            <span>现代地图</span>
+            <span>鐜颁唬鍦板浘</span>
           </button>
           <button class="mode-tab" data-mode="ancient">
-            <span>宋代古地图</span>
+            <span>瀹嬩唬鍙ゅ湴鍥?/span>
           </button>
         </div>
-        <a class="header-home" href="index.html">首页</a>
+        <a class="header-home" href="index.html">棣栭〉</a>
       </div>
     </header>
 
     <div class="workspace">
       <aside class="sidebar">
         <div class="sidebar-filters">
-          <button class="chip active" data-filter="all">全部 <span class="count" id="count-all">14</span></button>
-          <button class="chip" data-filter="song">宋文化 <span class="count" id="count-song">10</span></button>
-          <button class="chip" data-filter="renewal">城市更新 <span class="count" id="count-renewal">4</span></button>
+          <button class="chip active" data-filter="all">鍏ㄩ儴 <span class="count" id="count-all">14</span></button>
+          <button class="chip" data-filter="song">瀹嬫枃鍖?<span class="count" id="count-song">10</span></button>
+          <button class="chip" data-filter="renewal">鍩庡競鏇存柊 <span class="count" id="count-renewal">4</span></button>
         </div>
 
         <div id="poi-list" class="poi-list"></div>
 
         <div id="bottom-sheet" class="preview-card">
-          <button id="sheet-close" class="sheet-close" title="关闭">×</button>
+          <button id="sheet-close" class="sheet-close" title="鍏抽棴">脳</button>
           <div class="sheet-content">
             <div class="sheet-header">
               <img id="sheet-thumb" class="sheet-thumb" src="" alt="">
@@ -70,8 +70,8 @@
             </div>
             <p id="sheet-intro" class="sheet-intro"></p>
             <div class="sheet-actions">
-              <button id="btn-guide" class="btn btn-primary">游览攻略</button>
-              <button id="btn-nav" class="btn btn-outline">定位到此</button>
+              <button id="btn-guide" class="btn btn-primary">娓歌鏀荤暐</button>
+              <button id="btn-nav" class="btn btn-outline">瀹氫綅鍒版</button>
             </div>
           </div>
         </div>
@@ -82,19 +82,19 @@
         <div id="ancient-map-container" class="ancient-map-container" aria-hidden="true"></div>
 
         <div class="map-controls">
-          <button id="btn-map-mode" class="ctrl-btn map-mode-btn" title="切换地图">
-            <span id="mode-label" class="mode-label">古地图</span>
+          <button id="btn-map-mode" class="ctrl-btn map-mode-btn" title="鍒囨崲鍦板浘">
+            <span id="mode-label" class="mode-label">鍙ゅ湴鍥?/span>
           </button>
-          <button id="btn-locate" class="ctrl-btn locate" title="回到城市中心">⌖</button>
-          <button id="btn-zoom-in" class="ctrl-btn" title="放大">+</button>
-          <button id="btn-zoom-out" class="ctrl-btn" title="缩小">−</button>
+          <button id="btn-locate" class="ctrl-btn locate" title="鍥炲埌鍩庡競涓績">鈱?/button>
+          <button id="btn-zoom-in" class="ctrl-btn" title="鏀惧ぇ">+</button>
+          <button id="btn-zoom-out" class="ctrl-btn" title="缂╁皬">鈭?/button>
         </div>
       </main>
     </div>
 
     <div id="detail-panel" class="detail-panel">
       <div class="detail-hero">
-        <button id="detail-back" class="detail-back" title="关闭">←</button>
+        <button id="detail-back" class="detail-back" title="鍏抽棴">鈫?/button>
         <img id="detail-hero-img" src="" alt="">
         <div class="detail-hero-overlay"></div>
         <div id="detail-hero-title" class="detail-hero-title"></div>
@@ -102,16 +102,16 @@
       <div class="detail-body">
         <div id="detail-meta" class="detail-meta"></div>
         <div class="detail-section">
-          <h3>景点介绍</h3>
+          <h3>鏅偣浠嬬粛</h3>
           <p id="detail-intro"></p>
         </div>
         <div class="detail-section">
-          <h3>游览攻略</h3>
+          <h3>娓歌鏀荤暐</h3>
           <p id="detail-guide"></p>
         </div>
         <div id="detail-renewal-section" class="detail-section">
           <div class="renewal-box">
-            <h4>城市更新</h4>
+            <h4>鍩庡競鏇存柊</h4>
             <p id="detail-renewal"></p>
           </div>
         </div>
@@ -120,17 +120,18 @@
 
     <div id="search-panel" class="search-panel">
       <div class="search-panel-header">
-        <input id="search-panel-input" type="text" placeholder="搜索景点名称、标签…">
-        <button id="search-cancel">关闭</button>
+        <input id="search-panel-input" type="text" placeholder="鎼滅储鏅偣鍚嶇О銆佹爣绛锯€?>
+        <button id="search-cancel">鍏抽棴</button>
       </div>
       <div id="search-results" class="search-results"></div>
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="vendor/leaflet/leaflet.js"></script>
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
   <script src="js/ancient-maps.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
+

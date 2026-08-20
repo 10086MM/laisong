@@ -1201,3 +1201,166 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
     width: 100%;
   }
 }
+
+/* ===== 地图页暗色调（与首页衔接） ===== */
+body.page-map {
+  --amap-blue: #c9a227;
+  --amap-blue-dark: #a8861c;
+  --amap-orange: #d4783c;
+  --amap-bg: #14100d;
+  --amap-text: #f0e6d8;
+  --amap-text-sub: #b9a994;
+  --amap-text-light: #8f8170;
+  --amap-border: rgba(244, 235, 224, 0.12);
+  --amap-shadow: 0 4px 20px rgba(0, 0, 0, .35);
+  color: var(--amap-text);
+  background: #14100d;
+}
+body.page-map .site-header {
+  background: #1a1510;
+  border-bottom-color: var(--amap-border);
+  box-shadow: none;
+}
+body.page-map .brand-text h1 { color: #f4ebe0; }
+body.page-map .brand-text p { color: var(--amap-text-light); }
+body.page-map .brand-logo { border-color: rgba(244,235,224,.15); }
+body.page-map .search-box {
+  background: #221c16;
+  border-color: transparent;
+}
+body.page-map .search-box:hover,
+body.page-map .search-box:focus-within {
+  background: #2a231c;
+  border-color: rgba(201, 162, 39, .35);
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+body.page-map .search-box input { color: #f4ebe0; }
+body.page-map .search-box input::placeholder { color: #7a6e60; }
+body.page-map .search-clear { background: #3a3228; color: #cbbba8; }
+body.page-map .search-dropdown {
+  background: #1f1914;
+  border: 1px solid var(--amap-border);
+  box-shadow: 0 8px 28px rgba(0,0,0,.45);
+}
+body.page-map .search-item:hover { background: #2a231c; }
+body.page-map .search-item-name { color: #f4ebe0; }
+body.page-map .search-item-addr { color: var(--amap-text-light); }
+body.page-map .city-tabs,
+body.page-map .map-mode-bar {
+  background: #221c16;
+}
+body.page-map .city-tab,
+body.page-map .mode-tab {
+  color: var(--amap-text-sub);
+}
+body.page-map .city-tab.active {
+  background: #2f2820;
+  color: #e6c35c;
+  box-shadow: none;
+}
+body.page-map .mode-tab.active {
+  background: #a8261c;
+  color: #fff8ef;
+}
+body.page-map .header-home {
+  border-color: rgba(244,235,224,.22);
+  color: var(--amap-text-sub);
+}
+body.page-map .header-home:hover {
+  background: #2a231c;
+  color: #f4ebe0;
+  border-color: rgba(244,235,224,.35);
+}
+body.page-map .sidebar {
+  background: #17130f;
+  border-right: 1px solid var(--amap-border);
+}
+body.page-map .sidebar-filters { background: transparent; }
+body.page-map .chip {
+  background: #221c16;
+  color: var(--amap-text-sub);
+  border: 1px solid transparent;
+}
+body.page-map .chip.active {
+  background: #a8261c;
+  color: #fff8ef;
+  border-color: #a8261c;
+}
+body.page-map .poi-item:hover { background: #221c16; }
+body.page-map .poi-item.active {
+  background: rgba(168, 38, 28, 0.18);
+  border-color: rgba(168, 38, 28, 0.45);
+}
+body.page-map .poi-item-title { color: #f4ebe0; }
+body.page-map .poi-item-addr { color: var(--amap-text-light); }
+body.page-map .poi-item-thumb {
+  background: #2a231c;
+  border: 1px solid rgba(244,235,224,.08);
+}
+body.page-map .tag {
+  background: #2a231c;
+  color: #d2c3b0;
+}
+body.page-map .preview-card {
+  background: #1a1510;
+  border-top: 1px solid var(--amap-border);
+  box-shadow: 0 -8px 28px rgba(0,0,0,.4);
+}
+body.page-map .sheet-name { color: #f4ebe0; }
+body.page-map .sheet-address,
+body.page-map .sheet-intro { color: var(--amap-text-sub); }
+body.page-map .sheet-close {
+  background: #2a231c;
+  color: #f4ebe0;
+}
+body.page-map .btn-outline {
+  background: transparent;
+  border-color: rgba(244,235,224,.28);
+  color: #f4ebe0;
+}
+body.page-map .btn-primary {
+  background: #a8261c;
+  border-color: #a8261c;
+  color: #fff8ef;
+}
+body.page-map .detail-panel {
+  background: #17130f;
+  box-shadow: -8px 0 32px rgba(0,0,0,.45);
+}
+body.page-map .detail-body { color: var(--amap-text-sub); }
+body.page-map .detail-section h3 { color: #f4ebe0; }
+body.page-map .detail-back {
+  background: rgba(26, 21, 16, .92);
+  color: #f4ebe0;
+}
+body.page-map .renewal-box {
+  background: rgba(212, 120, 60, 0.12);
+  border-color: rgba(212, 120, 60, 0.35);
+}
+body.page-map .map-stage { background: #1c1712; }
+body.page-map .ctrl-btn {
+  background: #1a1510;
+  color: #f4ebe0;
+  border: 1px solid var(--amap-border);
+  box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+body.page-map .ctrl-btn:hover { background: #2a231c; }
+body.page-map .ancient-era-badge {
+  background: rgba(26, 21, 16, .88);
+  color: #f4ebe0;
+  border: 1px solid var(--amap-border);
+}
+body.page-map .poi-photo-label {
+  background: rgba(26, 21, 16, 0.94);
+  color: #f4ebe0;
+  border-color: rgba(244,235,224,.12);
+}
+body.page-map .poi-photo-marker.is-active .poi-photo-label {
+  background: var(--pin-color, #c9a227);
+  color: #1a120e;
+}
+body.page-map .poi-photo-pin.is-song { --pin-color: #c9a227; }
+body.page-map .poi-photo-pin.is-renewal { --pin-color: #d4783c; }
+body.page-map .idx { background: #c9a227; }
+body.page-map .idx.renewal { background: #d4783c; }
+
