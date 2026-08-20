@@ -557,6 +557,13 @@
     showBottomSheet(poi);
     highlightPoiInList(poi.id);
 
+    // 桌面端：列表/标注点击同步右侧详情；移动端仅在详情已打开时刷新
+    const detailPanel = $('#detail-panel');
+    const isDesktop = window.matchMedia('(min-width: 801px)').matches;
+    if (isDesktop || (detailPanel && detailPanel.classList.contains('open'))) {
+      showDetail(poi);
+    }
+
     const listItem = $(`.poi-item[data-id="${poi.id}"]`);
     if (listItem) listItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
