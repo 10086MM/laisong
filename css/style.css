@@ -55,6 +55,26 @@ html, body {
   gap: 12px;
   flex-shrink: 0;
 }
+.brand-link {
+  text-decoration: none;
+  color: inherit;
+}
+.header-home {
+  flex-shrink: 0;
+  margin-left: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--amap-border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--amap-text-sub);
+  text-decoration: none;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.header-home:hover {
+  background: #f5f6f8;
+  color: var(--amap-text);
+  border-color: #d0d3d9;
+}
 .brand-logo {
   width: 48px;
   height: 48px;
@@ -869,42 +889,6 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
   padding: 60px 20px;
   color: var(--amap-text-light);
 }
-
-/* ===== 加载 ===== */
-.loading-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 500;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  transition: opacity .4s, visibility .4s;
-}
-.loading-overlay.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.loading-logo {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--amap-blue);
-  letter-spacing: 2px;
-}
-.loading-logo span { color: var(--amap-orange); }
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid #e8e8e8;
-  border-top-color: var(--amap-blue);
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-size: 13px; color: var(--amap-text-light); }
 
 /* ===== Fallback 现代地图 ===== */
 .fallback-map { background: #e8ede8; overflow: hidden; }

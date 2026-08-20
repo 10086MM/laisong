@@ -1,0 +1,322 @@
+/* 首页 · 文化叙事（无地图） */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #1a120e;
+  --silk: #f4ebe0;
+  --cinnabar: #a8261c;
+  --mute: rgba(244, 235, 224, .72);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.page-home {
+  font-family: "Noto Serif SC", "Songti SC", "Microsoft YaHei", serif;
+  color: var(--ink);
+  background: #0f0a08;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* 顶栏 */
+.home-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.home-nav-brand {
+  font-family: "Ma Shan Zheng", "KaiTi", cursive;
+  font-size: 22px;
+  letter-spacing: .12em;
+}
+.home-nav-cta {
+  font-size: 13px;
+  letter-spacing: .28em;
+  border: 1px solid rgba(255,255,255,.55);
+  padding: 8px 18px 8px 22px;
+  transition: background .25s, border-color .25s;
+}
+.home-nav-cta:hover {
+  background: rgba(255,255,255,.12);
+}
+
+/* 首屏 */
+.home-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--silk);
+}
+.home-hero-visual {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.home-hero-panel {
+  position: relative;
+  overflow: hidden;
+}
+.home-hero-panel + .home-hero-panel {
+  border-left: 1px solid rgba(244, 235, 224, .16);
+}
+.home-hero-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  transform: scale(1.08);
+  animation: homeKen 20s ease-out forwards;
+}
+.home-hero-panel:last-child img {
+  object-position: center 35%;
+  animation-delay: .4s;
+}
+@keyframes homeKen {
+  from { transform: scale(1.14) translate3d(0, 2%, 0); }
+  to { transform: scale(1.02) translate3d(0, 0, 0); }
+}
+.home-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15, 8, 5, .62) 0%, rgba(15, 8, 5, .28) 42%, rgba(15, 8, 5, .82) 100%),
+    radial-gradient(ellipse 58% 52% at 50% 40%, transparent 8%, rgba(8, 4, 2, .55) 100%);
+}
+.home-hero-copy {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px 24px 80px;
+  max-width: 780px;
+}
+.home-hero-place {
+  font-size: 13px;
+  letter-spacing: .4em;
+  color: var(--mute);
+  margin-bottom: 22px;
+  opacity: 0;
+  animation: homeRise .9s .2s ease forwards;
+}
+.home-hero-brand {
+  font-family: "Ma Shan Zheng", "KaiTi", cursive;
+  font-size: clamp(52px, 8.5vw, 96px);
+  font-weight: 400;
+  letter-spacing: .12em;
+  line-height: 1.12;
+  color: #fff8ef;
+  text-shadow: 0 2px 30px rgba(0,0,0,.35);
+  opacity: 0;
+  animation: homeRise 1s .4s ease forwards;
+}
+.home-hero-sub {
+  margin-top: 18px;
+  font-size: clamp(15px, 1.6vw, 18px);
+  letter-spacing: .18em;
+  color: rgba(244, 235, 224, .84);
+  opacity: 0;
+  animation: homeRise .9s .65s ease forwards;
+}
+.home-hero-cta {
+  display: inline-block;
+  margin-top: 42px;
+  border: 1px solid rgba(244, 235, 224, .55);
+  padding: 14px 36px 14px 42px;
+  font-size: 15px;
+  letter-spacing: .36em;
+  color: #fff8ef;
+  opacity: 0;
+  animation: homeRise .9s .9s ease forwards, homeGlow 2.8s 1.8s ease-in-out infinite;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.home-hero-cta:hover {
+  background: rgba(168, 38, 28, .9);
+  border-color: rgba(168, 38, 28, .95);
+  transform: translateY(-1px);
+}
+@keyframes homeRise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes homeGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(168, 38, 28, 0); }
+  50% { box-shadow: 0 0 28px rgba(168, 38, 28, .28); }
+}
+.home-hero-scroll {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: .35em;
+  color: rgba(244, 235, 224, .45);
+  animation: homeBob 2.4s ease-in-out infinite;
+}
+@keyframes homeBob {
+  0%, 100% { transform: translateY(0); opacity: .45; }
+  50% { transform: translateY(6px); opacity: .8; }
+}
+
+/* 叙事段 */
+.home-story {
+  padding: clamp(72px, 12vw, 128px) 28px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--silk);
+  background: #120c09;
+}
+.home-story-kicker {
+  font-size: 12px;
+  letter-spacing: .42em;
+  color: rgba(244, 235, 224, .5);
+  margin-bottom: 20px;
+}
+.home-story-title {
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: .08em;
+  margin-bottom: 24px;
+}
+.home-story-text {
+  font-size: 16px;
+  line-height: 1.95;
+  letter-spacing: .06em;
+  color: rgba(244, 235, 224, .72);
+}
+
+/* 双城入口（交互热区，非整页卡片堆砌） */
+.home-cities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 72vh;
+}
+.home-city {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 420px;
+  color: var(--silk);
+}
+.home-city img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.1s ease;
+}
+.home-city:hover img { transform: scale(1.06); }
+.home-city-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12,6,4,.25) 0%, rgba(12,6,4,.78) 100%);
+  transition: background .35s;
+}
+.home-city:hover .home-city-veil {
+  background: linear-gradient(180deg, rgba(12,6,4,.18) 0%, rgba(12,6,4,.7) 100%);
+}
+.home-city-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px 36px;
+  z-index: 1;
+}
+.home-city-copy span {
+  display: block;
+  font-size: 12px;
+  letter-spacing: .35em;
+  color: rgba(244, 235, 224, .7);
+  margin-bottom: 10px;
+}
+.home-city-copy strong {
+  display: block;
+  font-family: "Ma Shan Zheng", "KaiTi", cursive;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 400;
+  letter-spacing: .16em;
+  line-height: 1.1;
+}
+.home-city-copy em {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 14px;
+  letter-spacing: .16em;
+  color: rgba(244, 235, 224, .78);
+}
+
+/* 收束 CTA */
+.home-end {
+  padding: clamp(88px, 14vw, 140px) 28px;
+  text-align: center;
+  color: var(--silk);
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 20%, rgba(168, 38, 28, .18), transparent 60%),
+    #0f0a08;
+}
+.home-end-brand {
+  font-family: "Ma Shan Zheng", "KaiTi", cursive;
+  font-size: clamp(40px, 6vw, 68px);
+  font-weight: 400;
+  letter-spacing: .14em;
+}
+.home-end-sub {
+  margin-top: 16px;
+  font-size: 14px;
+  letter-spacing: .22em;
+  color: rgba(244, 235, 224, .62);
+}
+.home-end-cta {
+  display: inline-block;
+  margin-top: 36px;
+  background: var(--cinnabar);
+  border: 1px solid var(--cinnabar);
+  color: #fff8ef;
+  padding: 14px 40px 14px 44px;
+  font-size: 15px;
+  letter-spacing: .32em;
+  transition: transform .25s, filter .25s;
+}
+.home-end-cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.home-foot {
+  padding: 28px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: rgba(244, 235, 224, .38);
+  background: #0a0705;
+  border-top: 1px solid rgba(244, 235, 224, .08);
+}
+
+@media (max-width: 800px) {
+  .home-nav { padding: 14px 18px; }
+  .home-hero-visual { grid-template-columns: 1fr; }
+  .home-hero-panel:first-child { display: none; }
+  .home-cities { grid-template-columns: 1fr; }
+  .home-hero-place,
+  .home-hero-sub,
+  .home-hero-cta { letter-spacing: .14em; }
+}

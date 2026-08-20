@@ -13,16 +13,26 @@
   let selectedPoi = null;
   let ancientZoom = 1;
   let ancientPan = { x: 0, y: 0 };
+  let mapReady = false;
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => document.querySelectorAll(sel);
 
   function init() {
+    const params = new URLSearchParams(location.search);
+    const city = params.get('city');
+    if (city === 'kaifeng' || city === 'hangzhou') currentCity = city;
+
     bindEvents();
     updateFilterCounts();
     renderPoiList();
     updateMapModeUI();
+    syncCityTabs();
     loadMap();
+  }
+
+  function syncCityTabs() {
+    $$('.city-tab').forEach(t => t.classList.toggle('active', t.dataset.city === currentCity));
   }
 
   function loadScript(src) {
@@ -57,12 +67,20 @@
     start
       .then(() => {
         applyMapMode();
-        hideLoading();
+        onMapReady();
       })
       .catch(() => {
         applyMapMode();
-        hideLoading();
+        onMapReady();
       });
+  }
+
+  function onMapReady() {
+    mapReady = true;
+    requestAnimationFrame(() => {
+      if (mapEngine === 'leaflet' && map) map.invalidateSize();
+      if (mapEngine === 'amap' && map && map.resize) map.resize();
+    });
   }
 
   function resetMapContainer() {
@@ -87,10 +105,29 @@
       attributionControl: true
     });
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // 国内更稳的高德栅格底图；失败时回退 Carto
+    const gaode = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+      maxZoom: 18,
+      subdomains: '1234',
+      attribution: '&copy; 高德地图'
+    });
+    const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+      subdomains: 'abcd',
+      attribution: '&copy; OpenStreetMap &copy; CARTO'
+    });
+
+    let tileErrors = 0;
+    gaode.on('tileerror', () => {
+      tileErrors += 1;
+      if (tileErrors >= 4 && map.hasLayer(gaode)) {
+        map.removeLayer(gaode);
+        carto.addTo(map);
+        map._songTileLayer = carto;
+      }
+    });
+    gaode.addTo(map);
+    map._songTileLayer = gaode;
 
     mapEngine = 'leaflet';
   }
@@ -364,10 +401,6 @@
   function applyAncientTransform() {
     const inner = $('#ancient-inner');
     if (inner) inner.style.transform = `translate(${ancientPan.x}px, ${ancientPan.y}px) scale(${ancientZoom})`;
-  }
-
-  function hideLoading() {
-    setTimeout(() => $('#loading').classList.add('hidden'), 600);
   }
 
   /* ---------- 标记渲染（现代地图） ---------- */
