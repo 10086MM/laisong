@@ -28,8 +28,8 @@ window.assetUrl = function (path) {
   return (window.ASSET_CDN || '') + clean;
 };
 
-/** 微信可分享的备用地址（部署到 Gitee Pages 后请改成你的真实地址） */
-window.WECHAT_MIRROR_URL = '';
+/** 微信可分享地址（帽子云） */
+window.WECHAT_MIRROR_URL = 'https://lias-a6hz201yp.maozi.io/';
 
 window.showWeChatTip = function () {
   if (!window.IS_WECHAT) return;
