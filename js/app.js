@@ -166,7 +166,7 @@
     return createPhotoPinMarkup(poi, num);
   }
 
-  function createPhotoPinMarkup(poi, idx) {
+  function createPhotoPinMarkup(poi, num) {
     const typeClass = poi.category === 'renewal' ? 'is-renewal' : 'is-song';
     return `
       <div class="poi-photo-marker">
@@ -174,7 +174,7 @@
           <div class="poi-photo-head">
             <img src="${poi.image}" alt="${poi.name}" loading="lazy">
           </div>
-          <span class="poi-photo-index">${idx + 1}</span>
+          <span class="poi-photo-index">${num}</span>
         </div>
         <div class="poi-photo-label">${poi.name}</div>
       </div>
@@ -299,15 +299,18 @@
     ancientZoom = getAncientDefaultZoom(currentCity);
     ancientPan = { x: 0, y: 0 };
     applyAncientTransform();
+    if (selectedPoi) {
+      requestAnimationFrame(() => highlightMapPin(selectedPoi.id));
+    }
   }
 
-  function createAncientPin(poi, idx, pos) {
+  function createAncientPin(poi, num, pos) {
     const pin = document.createElement('div');
     pin.className = 'ancient-pin';
     pin.dataset.id = poi.id;
     pin.style.left = pos.x + '%';
     pin.style.top = pos.y + '%';
-    pin.innerHTML = createPhotoPinMarkup(poi, idx);
+    pin.innerHTML = createPhotoPinMarkup(poi, num);
     pin.addEventListener('click', (e) => {
       e.stopPropagation();
       selectPoi(poi);
@@ -430,6 +433,7 @@
           iconAnchor: [PHOTO_PIN.anchorX, PHOTO_PIN.anchorY]
         });
         const marker = L.marker([poi.lat, poi.lng], { icon, zIndexOffset: 100 + idx });
+        marker._poiId = poi.id;
         marker.on('click', () => selectPoi(poi));
         marker.addTo(map);
         markers.push(marker);
@@ -442,11 +446,14 @@
           offset: new AMap.Pixel(-PHOTO_PIN.anchorX, -PHOTO_PIN.anchorY),
           zIndex: 100 + idx
         });
+        marker._poiId = poi.id;
         marker.on('click', () => selectPoi(poi));
         marker.setMap(map);
         markers.push(marker);
       }
     });
+
+    if (selectedPoi) highlightMapPin(selectedPoi.id);
 
     if (pois.length === 0) return;
 
@@ -467,6 +474,40 @@
     markers = [];
   }
 
+  function getMarkerPinEl(marker) {
+    if (mapEngine === 'leaflet') {
+      const el = marker.getElement && marker.getElement();
+      return el ? el.querySelector('.poi-photo-marker') : null;
+    }
+    const content = marker.getContent && marker.getContent();
+    if (!content) return null;
+    if (content.classList && content.classList.contains('poi-photo-marker')) return content;
+    return content.querySelector ? content.querySelector('.poi-photo-marker') : null;
+  }
+
+  function highlightMapPin(poiId) {
+    if (mapMode === 'ancient') {
+      if (!poiId) {
+        $$('.ancient-pin').forEach(p => p.classList.remove('focused'));
+        return;
+      }
+      const poi = SONG_POIS[currentCity].pois.find(p => p.id === poiId);
+      if (poi) focusAncientPin(poi);
+      return;
+    }
+
+    markers.forEach((marker) => {
+      const pin = getMarkerPinEl(marker);
+      const active = !!poiId && marker._poiId === poiId;
+      if (pin) pin.classList.toggle('is-active', active);
+      if (mapEngine === 'leaflet') {
+        marker.setZIndexOffset(active ? 1200 : 100);
+      } else if (marker.setzIndex) {
+        marker.setzIndex(active ? 1200 : 100);
+      }
+    });
+  }
+
   /* ---------- POI 交互 ---------- */
   function selectPoi(poi, options) {
     const opts = options || {};
@@ -474,8 +515,9 @@
 
     if (mapMode === 'modern' && map) {
       mapSetView(poi.lng, poi.lat, opts.zoom || 16);
+      highlightMapPin(poi.id);
     } else if (mapMode === 'ancient') {
-      focusAncientPin(poi);
+      highlightMapPin(poi.id);
     }
 
     showBottomSheet(poi);
@@ -528,6 +570,7 @@
     $('#bottom-sheet').classList.remove('open');
     selectedPoi = null;
     highlightPoiInList(null);
+    highlightMapPin(null);
   }
 
   function renderPoiList() {

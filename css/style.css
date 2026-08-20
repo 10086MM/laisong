@@ -216,13 +216,20 @@ html, body {
 }
 
 .ancient-pin.focused .poi-photo-pin {
-  transform: translateY(-4px) scale(1.12);
+  transform: translateY(-8px) scale(1.22);
+  animation: pinGlow 1.2s ease-in-out infinite;
 }
 .ancient-pin.focused .poi-photo-head {
   box-shadow:
     0 0 0 3px #fff,
-    0 0 0 5px var(--pin-color, #0091ff),
-    0 6px 16px rgba(0, 0, 0, 0.35);
+    0 0 0 6px var(--pin-color, #0091ff),
+    0 0 18px rgba(0, 145, 255, 0.55),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.ancient-pin.focused .poi-photo-label {
+  background: var(--pin-color, #0091ff);
+  color: #fff;
+  border-color: transparent;
 }
 
 .header-actions {
@@ -560,6 +567,37 @@ body.ancient-theme .btn-primary { background: #8b4513; }
 }
 .poi-photo-marker:hover .poi-photo-pin {
   transform: translateY(-2px) scale(1.06);
+}
+.poi-photo-marker.is-active .poi-photo-pin {
+  transform: translateY(-8px) scale(1.22);
+  animation: pinGlow 1.2s ease-in-out infinite;
+}
+.poi-photo-marker.is-active .poi-photo-head {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 6px var(--pin-color),
+    0 0 18px rgba(0, 145, 255, 0.55),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.poi-photo-marker.is-active .poi-photo-pin.is-renewal .poi-photo-head {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 6px var(--pin-color),
+    0 0 18px rgba(255, 106, 0, 0.55),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.poi-photo-marker.is-active .poi-photo-label {
+  background: var(--pin-color, #0091ff);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+.poi-photo-marker.is-active .poi-photo-index {
+  transform: scale(1.08);
+}
+@keyframes pinGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+  50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.65)); }
 }
 .poi-photo-pin {
   --pin-color: #0091ff;
