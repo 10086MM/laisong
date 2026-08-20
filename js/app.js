@@ -301,7 +301,19 @@
 
     const imgWrap = document.createElement('div');
     imgWrap.className = 'ancient-img-wrap';
-    imgWrap.innerHTML = `<img class="ancient-map-img" src="${assetUrl(mapData.image)}" alt="${mapData.title}" draggable="false">`;
+
+    // 古地图走同源路径（不走 CDN），避免外链失败/过慢时容器塌成细条、标注挤成一列
+    const localSrc = String(mapData.image || '').replace(/^\.\//, '');
+    const img = document.createElement('img');
+    img.className = 'ancient-map-img';
+    img.alt = mapData.title;
+    img.draggable = false;
+    img.decoding = 'async';
+    img.src = localSrc;
+
+    const loading = document.createElement('div');
+    loading.className = 'ancient-map-loading';
+    loading.textContent = '古地图加载中…';
 
     const pinsLayer = document.createElement('div');
     pinsLayer.className = 'ancient-pins-layer';
@@ -311,6 +323,26 @@
       const pin = createAncientPin(poi, num, pos);
       pinsLayer.appendChild(pin);
     });
+
+    const markReady = () => {
+      imgWrap.classList.add('is-ready');
+      if (selectedPoi) highlightMapPin(selectedPoi.id);
+    };
+
+    img.addEventListener('load', markReady);
+    img.addEventListener('error', () => {
+      // 同源失败时再试一次无 query 的路径
+      if (img.dataset.retried) {
+        loading.textContent = '古地图加载失败，请刷新重试';
+        return;
+      }
+      img.dataset.retried = '1';
+      img.src = localSrc.replace(/\?.*$/, '') + '?v=12';
+    });
+    if (img.complete && img.naturalWidth > 0) markReady();
+
+    imgWrap.appendChild(img);
+    imgWrap.appendChild(loading);
     imgWrap.appendChild(pinsLayer);
 
     inner.appendChild(imgWrap);
@@ -326,9 +358,6 @@
     ancientZoom = getAncientDefaultZoom(currentCity);
     ancientPan = { x: 0, y: 0 };
     applyAncientTransform();
-    if (selectedPoi) {
-      requestAnimationFrame(() => highlightMapPin(selectedPoi.id));
-    }
   }
 
   function createAncientPin(poi, num, pos) {

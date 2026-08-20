@@ -1043,25 +1043,32 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
 .ancient-viewport:active { cursor: grabbing; }
 .ancient-inner {
   position: relative;
-  /* 按高度铺满，宽度随比例，去掉 920px 上限减少两侧空白 */
-  width: auto;
-  height: 96%;
+  /* 由图片固有尺寸驱动宽高，避免「未加载时宽=0 → max-width:100% 永久压成细条」 */
+  width: fit-content;
+  height: auto;
   max-width: 98%;
+  max-height: 96%;
   transform-origin: center center;
   will-change: transform;
 }
 .ancient-img-wrap {
   position: relative;
-  display: inline-block;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
+  display: block;
+  width: fit-content;
+  height: auto;
   line-height: 0;
   border-radius: 0;
   overflow: visible;
   box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(244, 235, 224, 0.18);
   background: #2a231c;
+  /* 加载前占位，防止标注挤成一竖条 */
+  min-width: min(480px, 72vw);
+  aspect-ratio: 2 / 3;
+}
+.ancient-img-wrap.is-ready {
+  min-width: 0;
+  aspect-ratio: auto;
 }
 .ancient-pins-layer {
   position: absolute;
@@ -1071,16 +1078,38 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
   height: 100%;
   pointer-events: none;
   z-index: 10;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.ancient-img-wrap.is-ready .ancient-pins-layer {
+  opacity: 1;
 }
 .ancient-map-img {
   display: block;
-  height: 100%;
   width: auto;
-  max-width: 100%;
+  height: auto;
+  max-width: min(98vw, calc(100vw - var(--sidebar-w) - 48px));
+  max-height: calc(100vh - var(--header-h) - 48px);
   object-fit: contain;
   background: #2a231c;
   user-select: none;
   -webkit-user-drag: none;
+}
+.ancient-map-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(244, 235, 224, 0.72);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  pointer-events: none;
+  background: rgba(26, 21, 16, 0.35);
+}
+.ancient-img-wrap.is-ready .ancient-map-loading {
+  display: none;
 }
 .ancient-map-caption {
   position: absolute;
