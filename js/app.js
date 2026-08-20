@@ -129,13 +129,13 @@
       attributionControl: true
     });
 
-    // 国内更稳的高德栅格底图；失败时回退 Carto
+    // 高德路网（国内稳）；失败回退暗色 Carto
     const gaode = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
       maxZoom: 18,
       subdomains: '1234',
       attribution: '&copy; 高德地图'
     });
-    const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
       subdomains: 'abcd',
       attribution: '&copy; OpenStreetMap &copy; CARTO'
@@ -146,12 +146,15 @@
       tileErrors += 1;
       if (tileErrors >= 4 && map.hasLayer(gaode)) {
         map.removeLayer(gaode);
-        carto.addTo(map);
-        map._songTileLayer = carto;
+        cartoDark.addTo(map);
+        map._songTileLayer = cartoDark;
+        $('#map-container')?.classList.remove('tiles-dimmed');
       }
     });
     gaode.addTo(map);
     map._songTileLayer = gaode;
+    // 高德浅色底图压暗，与首页暗色调衔接
+    $('#map-container')?.classList.add('tiles-dimmed');
 
     mapEngine = 'leaflet';
   }
@@ -166,7 +169,7 @@
     map = new AMap.Map('map-container', {
       zoom: cityData.zoom,
       center: cityData.center,
-      mapStyle: 'amap://styles/normal',
+      mapStyle: 'amap://styles/dark',
       viewMode: '2D',
       features: ['bg', 'road', 'building', 'point'],
       zooms: [10, 18]
@@ -361,13 +364,20 @@
       if (!dragging) return;
       ancientPan.x = startPanX + (e.clientX - startX);
       ancientPan.y = startPanY + (e.clientY - startY);
-      inner.style.transform = `translate(${ancientPan.x}px, ${ancientPan.y}px) scale(${ancientZoom})`;
+      applyAncientTransform();
     });
 
     window.addEventListener('mouseup', () => {
       dragging = false;
-      viewport.style.cursor = 'grab';
+      if (viewport) viewport.style.cursor = 'grab';
     });
+
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const step = e.deltaY > 0 ? -0.15 : 0.15;
+      ancientZoom = Math.min(4.5, Math.max(0.55, ancientZoom + step));
+      applyAncientTransform();
+    }, { passive: false });
 
     viewport.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
@@ -386,12 +396,12 @@
       if (e.touches.length === 1 && dragging) {
         ancientPan.x = startPanX + (e.touches[0].clientX - startX);
         ancientPan.y = startPanY + (e.touches[0].clientY - startY);
-        inner.style.transform = `translate(${ancientPan.x}px, ${ancientPan.y}px) scale(${ancientZoom})`;
+        applyAncientTransform();
       } else if (e.touches.length === 2) {
         const dist = getTouchDist(e.touches);
         if (lastDist > 0) {
-          ancientZoom = Math.min(3, Math.max(0.6, ancientZoom * (dist / lastDist)));
-          inner.style.transform = `translate(${ancientPan.x}px, ${ancientPan.y}px) scale(${ancientZoom})`;
+          ancientZoom = Math.min(4.5, Math.max(0.55, ancientZoom * (dist / lastDist)));
+          applyAncientTransform();
         }
         lastDist = dist;
       }
@@ -410,12 +420,12 @@
   }
 
   function ancientZoomIn() {
-    ancientZoom = Math.min(3, ancientZoom + 0.25);
+    ancientZoom = Math.min(4.5, ancientZoom + 0.3);
     applyAncientTransform();
   }
 
   function ancientZoomOut() {
-    ancientZoom = Math.max(0.6, ancientZoom - 0.25);
+    ancientZoom = Math.max(0.55, ancientZoom - 0.3);
     applyAncientTransform();
   }
 
@@ -650,6 +660,23 @@
     `;
     $('#detail-intro').textContent = poi.intro;
     $('#detail-guide').textContent = poi.guide;
+
+    const cultureSection = $('#detail-culture-section');
+    if (poi.culture) {
+      cultureSection.style.display = 'block';
+      $('#detail-culture').textContent = poi.culture;
+    } else {
+      cultureSection.style.display = 'none';
+    }
+
+    const travelSection = $('#detail-travel-section');
+    if (poi.travel) {
+      travelSection.style.display = 'block';
+      $('#detail-travel').textContent = poi.travel;
+    } else {
+      travelSection.style.display = 'none';
+    }
+
     const renewalSection = $('#detail-renewal-section');
     if (poi.urbanRenewal) {
       renewalSection.style.display = 'block';

@@ -6,16 +6,16 @@ window.ANCIENT_MAPS = {
   kaifeng: {
     title: '北宋东京汴梁城坊图',
     era: '北向上 · 对准底图文字标注',
-    image: 'image/map-kaifeng-ancient.jpg?v=10',
+    image: 'image/map-kaifeng-ancient.jpg?v=11',
     credit: '已按底图地名重新校准',
-    defaultZoom: 1.05
+    defaultZoom: 1.15
   },
   hangzhou: {
     title: '南宋临安府城图',
     era: '北向上 · 对准底图文字标注',
-    image: 'image/map-hangzhou-ancient.jpg?v=10',
+    image: 'image/map-hangzhou-ancient.jpg?v=11',
     credit: '已按底图地名重新校准',
-    defaultZoom: 1.1
+    defaultZoom: 1.2
   }
 };
 

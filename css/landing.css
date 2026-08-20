@@ -320,3 +320,34 @@ a { color: inherit; text-decoration: none; }
   .home-hero-sub,
   .home-hero-cta { letter-spacing: .14em; }
 }
+
+/* 微信提示（首页） */
+.wechat-tip {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(10, 7, 5, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.wechat-tip-card {
+  width: min(420px, 100%);
+  background: #1a1510;
+  border: 1px solid rgba(244, 235, 224, 0.18);
+  color: #f4ebe0;
+  padding: 28px 24px;
+  text-align: center;
+}
+.wechat-tip-title { font-size: 18px; letter-spacing: .12em; margin-bottom: 12px; }
+.wechat-tip-text { font-size: 14px; line-height: 1.7; color: rgba(244,235,224,.78); margin-bottom: 20px; }
+.wechat-tip-btn {
+  border: 1px solid rgba(244, 235, 224, 0.4);
+  background: #a8261c;
+  color: #fff8ef;
+  padding: 10px 22px;
+  font-size: 14px;
+  letter-spacing: .16em;
+  cursor: pointer;
+}

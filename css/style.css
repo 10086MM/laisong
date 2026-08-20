@@ -707,10 +707,20 @@ body.ancient-theme .btn-primary { background: #8b4513; }
   position: absolute;
   right: 20px;
   bottom: 28px;
-  z-index: 100;
+  z-index: 120;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+body.page-map.ancient-theme .map-controls .ctrl-btn {
+  background: rgba(26, 21, 16, 0.94);
+  color: #f4ebe0;
+  border: 1px solid rgba(244, 235, 224, 0.28);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+body.page-map.ancient-theme .map-controls .ctrl-btn:hover {
+  background: #2f2820;
+  color: #e6c35c;
 }
 .ctrl-btn {
   width: 44px;
@@ -1016,7 +1026,7 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: #c4a574;
+  background: #1a1510;
   overflow: hidden;
 }
 .ancient-map-container.active { display: block; }
@@ -1033,20 +1043,25 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
 .ancient-viewport:active { cursor: grabbing; }
 .ancient-inner {
   position: relative;
-  width: min(920px, 86%);
-  height: auto;
+  /* 按高度铺满，宽度随比例，去掉 920px 上限减少两侧空白 */
+  width: auto;
+  height: 96%;
+  max-width: 98%;
   transform-origin: center center;
   will-change: transform;
 }
 .ancient-img-wrap {
   position: relative;
-  width: 100%;
+  display: inline-block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
   line-height: 0;
-  border-radius: 2px;
+  border-radius: 0;
   overflow: visible;
-  box-shadow: 0 8px 40px rgba(60, 40, 20, 0.35);
-  border: 4px solid #e8d9b8;
-  background: #d4c4a0;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(244, 235, 224, 0.18);
+  background: #2a231c;
 }
 .ancient-pins-layer {
   position: absolute;
@@ -1058,12 +1073,12 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
   z-index: 10;
 }
 .ancient-map-img {
-  width: 100%;
-  height: auto;
   display: block;
-  max-height: none;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
   object-fit: contain;
-  background: #d4c4a0;
+  background: #2a231c;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -1363,4 +1378,54 @@ body.page-map .poi-photo-pin.is-song { --pin-color: #c9a227; }
 body.page-map .poi-photo-pin.is-renewal { --pin-color: #d4783c; }
 body.page-map .idx { background: #c9a227; }
 body.page-map .idx.renewal { background: #d4783c; }
+
+/* 现代地图浅色瓦片压暗，减少与首页跳转反差 */
+body.page-map #map-container.tiles-dimmed .leaflet-tile-pane {
+  filter: brightness(0.72) saturate(0.8) contrast(1.05);
+}
+body.page-map #map-container.tiles-dimmed .leaflet-container {
+  background: #1c1712;
+}
+
+/* 微信提示 */
+.wechat-tip {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(10, 7, 5, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.wechat-tip-card {
+  width: min(420px, 100%);
+  background: #1a1510;
+  border: 1px solid rgba(244, 235, 224, 0.18);
+  color: #f4ebe0;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+.wechat-tip-title {
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+.wechat-tip-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(244, 235, 224, 0.78);
+  margin-bottom: 20px;
+}
+.wechat-tip-btn {
+  appearance: none;
+  border: 1px solid rgba(244, 235, 224, 0.4);
+  background: #a8261c;
+  color: #fff8ef;
+  padding: 10px 22px;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
 
