@@ -1455,4 +1455,21 @@ body.page-map #map-container.tiles-dimmed .leaflet-container {
   letter-spacing: 0.16em;
   cursor: pointer;
 }
+.wechat-tip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.wechat-tip-btn-ghost {
+  background: transparent;
+  color: #f4ebe0;
+}
+.wechat-tip-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  word-break: break-all;
+  color: #f0d9a8;
+}
 
