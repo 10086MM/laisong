@@ -326,8 +326,8 @@
 
     const markReady = () => {
       imgWrap.classList.add('is-ready');
-      // 宽度铺满后，竖向居中长图，便于看到城内主体
       requestAnimationFrame(() => {
+        layoutAncientCover();
         ancientZoom = getAncientDefaultZoom(currentCity);
         ancientPan = { x: 0, y: 0 };
         applyAncientTransform();
@@ -343,7 +343,7 @@
         return;
       }
       img.dataset.retried = '1';
-      img.src = localSrc.replace(/\?.*$/, '') + '?v=12';
+      img.src = localSrc.replace(/\?.*$/, '') + '?v=13';
     });
     if (img.complete && img.naturalWidth > 0) markReady();
 
@@ -364,6 +364,27 @@
     ancientZoom = getAncientDefaultZoom(currentCity);
     ancientPan = { x: 0, y: 0 };
     applyAncientTransform();
+  }
+
+  /** 古地图按 cover 铺满地图区（与现代地图同大），标注仍相对整图百分比 */
+  function layoutAncientCover() {
+    const viewport = $('#ancient-viewport');
+    const wrap = document.querySelector('.ancient-img-wrap');
+    const img = document.querySelector('.ancient-map-img');
+    if (!viewport || !wrap || !img || !img.naturalWidth) return;
+
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    if (vw < 2 || vh < 2) return;
+
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+    const cover = Math.max(vw / iw, vh / ih);
+    const dw = Math.ceil(iw * cover);
+    const dh = Math.ceil(ih * cover);
+
+    wrap.style.width = dw + 'px';
+    wrap.style.height = dh + 'px';
   }
 
   function createAncientPin(poi, num, pos) {
@@ -465,6 +486,7 @@
   }
 
   function ancientResetView() {
+    layoutAncientCover();
     ancientZoom = getAncientDefaultZoom(currentCity);
     ancientPan = { x: 0, y: 0 };
     applyAncientTransform();
@@ -954,6 +976,16 @@
     $('#btn-locate').addEventListener('click', () => {
       if (mapMode === 'ancient') ancientResetView();
       else mapLocateCity();
+    });
+
+    let ancientResizeTimer = 0;
+    window.addEventListener('resize', () => {
+      if (mapMode !== 'ancient') return;
+      clearTimeout(ancientResizeTimer);
+      ancientResizeTimer = setTimeout(() => {
+        layoutAncientCover();
+        applyAncientTransform();
+      }, 120);
     });
 
     $('#btn-zoom-in').addEventListener('click', () => {

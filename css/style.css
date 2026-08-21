@@ -1065,9 +1065,9 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
 .ancient-viewport:active { cursor: grabbing; }
 .ancient-inner {
   position: relative;
-  /* 按主区域宽度铺满，消除左右黑边；高度随比例，可上下拖动 */
-  width: 100%;
-  height: auto;
+  /* 尺寸由 JS 按 cover 计算，铺满地图区（与现代地图同大） */
+  width: fit-content;
+  height: fit-content;
   max-width: none;
   max-height: none;
   transform-origin: center center;
@@ -1077,20 +1077,20 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
   position: relative;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   line-height: 0;
   border-radius: 0;
   overflow: visible;
   box-shadow: none;
   border: none;
   background: #2a231c;
-  /* 加载前占满宽度，避免塌成细条 */
+  /* 加载前先占满视口，避免细条 */
   min-width: 100%;
-  aspect-ratio: 2 / 3;
+  min-height: 100%;
 }
 .ancient-img-wrap.is-ready {
   min-width: 0;
-  aspect-ratio: auto;
+  min-height: 0;
 }
 .ancient-pins-layer {
   position: absolute;
@@ -1109,10 +1109,10 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
 .ancient-map-img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: none;
   max-height: none;
-  object-fit: unset;
+  object-fit: fill;
   background: #2a231c;
   user-select: none;
   -webkit-user-drag: none;
