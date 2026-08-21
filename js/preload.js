@@ -115,15 +115,20 @@
   function startPreload() {
     var images = (window.ASSET_MANIFEST || []).map(urlOf);
     var pages = (window.PAGE_PREFETCH || []).map(urlOf);
-    // 去重
+    // 去重；古地图/缩略图/地图脚本优先
     var seen = {};
-    var list = [];
+    var high = [];
+    var rest = [];
     images.concat(pages).forEach(function (u) {
       if (!u || seen[u]) return;
       seen[u] = 1;
-      list.push(u);
+      if (/map-.*ancient|\/pins\/|\/thumbs\/|leaflet|ancient-maps|data\.js|poi-extra|app\.js|style\.css|map\.html/i.test(u)) {
+        high.push(u);
+      } else {
+        rest.push(u);
+      }
     });
-
+    var list = high.concat(rest);
     if (!list.length) return;
 
     setStatus('正在预加载地图与景点图片 0/' + list.length + '…', false);
