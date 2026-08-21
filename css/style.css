@@ -27,6 +27,30 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 滚动条：暗色墨调，避免系统白条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6b5a48 #1a1510;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: #1a1510;
+}
+*::-webkit-scrollbar-thumb {
+  background: #6b5a48;
+  border-radius: 4px;
+  border: 2px solid #1a1510;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #8a7460;
+}
+*::-webkit-scrollbar-corner {
+  background: #1a1510;
+}
+
 #app {
   width: 100%;
   height: 100%;
