@@ -343,7 +343,7 @@
         return;
       }
       img.dataset.retried = '1';
-      img.src = localSrc.replace(/\?.*$/, '') + '?v=13';
+      img.src = localSrc.replace(/\?.*$/, '') + '?v=20';
     });
     if (img.complete && img.naturalWidth > 0) markReady();
 
