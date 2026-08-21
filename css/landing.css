@@ -82,27 +82,15 @@ a { color: inherit; text-decoration: none; }
 .home-hero-visual {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.home-hero-panel {
-  position: relative;
   overflow: hidden;
 }
-.home-hero-panel + .home-hero-panel {
-  border-left: 1px solid rgba(244, 235, 224, .16);
-}
-.home-hero-panel img {
+.home-hero-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 22%;
+  object-position: center 42%;
   transform: scale(1.08);
-  animation: homeKen 20s ease-out forwards;
-}
-.home-hero-panel:last-child img {
-  object-position: center 35%;
-  animation-delay: .4s;
+  animation: homeKen 22s ease-out forwards;
 }
 @keyframes homeKen {
   from { transform: scale(1.14) translate3d(0, 2%, 0); }
@@ -112,8 +100,8 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(15, 8, 5, .62) 0%, rgba(15, 8, 5, .28) 42%, rgba(15, 8, 5, .82) 100%),
-    radial-gradient(ellipse 58% 52% at 50% 40%, transparent 8%, rgba(8, 4, 2, .55) 100%);
+    linear-gradient(180deg, rgba(12, 6, 4, .55) 0%, rgba(12, 6, 4, .22) 40%, rgba(10, 5, 3, .78) 100%),
+    radial-gradient(ellipse 62% 55% at 50% 38%, transparent 10%, rgba(6, 3, 2, .5) 100%);
 }
 .home-hero-copy {
   position: relative;
@@ -330,8 +318,6 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 800px) {
   .home-nav { padding: 14px 18px; }
-  .home-hero-visual { grid-template-columns: 1fr; }
-  .home-hero-panel:first-child { display: none; }
   .home-cities { grid-template-columns: 1fr; }
   .home-hero-place,
   .home-hero-sub,
