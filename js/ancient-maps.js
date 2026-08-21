@@ -8,14 +8,14 @@ window.ANCIENT_MAPS = {
     era: '北向上 · 对准底图文字标注',
     image: 'image/map-kaifeng-ancient.jpg?v=12',
     credit: '已按底图地名重新校准',
-    defaultZoom: 1.15
+    defaultZoom: 1
   },
   hangzhou: {
     title: '南宋临安府城图',
     era: '北向上 · 对准底图文字标注',
     image: 'image/map-hangzhou-ancient.jpg?v=12',
     credit: '已按底图地名重新校准',
-    defaultZoom: 1.2
+    defaultZoom: 1
   }
 };
 

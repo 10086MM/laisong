@@ -1065,27 +1065,27 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
 .ancient-viewport:active { cursor: grabbing; }
 .ancient-inner {
   position: relative;
-  /* 由图片固有尺寸驱动宽高，避免「未加载时宽=0 → max-width:100% 永久压成细条」 */
-  width: fit-content;
+  /* 按主区域宽度铺满，消除左右黑边；高度随比例，可上下拖动 */
+  width: 100%;
   height: auto;
-  max-width: 98%;
-  max-height: 96%;
+  max-width: none;
+  max-height: none;
   transform-origin: center center;
   will-change: transform;
 }
 .ancient-img-wrap {
   position: relative;
   display: block;
-  width: fit-content;
+  width: 100%;
   height: auto;
   line-height: 0;
   border-radius: 0;
   overflow: visible;
-  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(244, 235, 224, 0.18);
+  box-shadow: none;
+  border: none;
   background: #2a231c;
-  /* 加载前占位，防止标注挤成一竖条 */
-  min-width: min(480px, 72vw);
+  /* 加载前占满宽度，避免塌成细条 */
+  min-width: 100%;
   aspect-ratio: 2 / 3;
 }
 .ancient-img-wrap.is-ready {
@@ -1108,11 +1108,11 @@ body.ancient-theme .detail-section h3::before { background: #8b4513; }
 }
 .ancient-map-img {
   display: block;
-  width: auto;
+  width: 100%;
   height: auto;
-  max-width: min(98vw, calc(100vw - var(--sidebar-w) - 48px));
-  max-height: calc(100vh - var(--header-h) - 48px);
-  object-fit: contain;
+  max-width: none;
+  max-height: none;
+  object-fit: unset;
   background: #2a231c;
   user-select: none;
   -webkit-user-drag: none;

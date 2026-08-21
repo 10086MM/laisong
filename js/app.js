@@ -326,7 +326,13 @@
 
     const markReady = () => {
       imgWrap.classList.add('is-ready');
-      if (selectedPoi) highlightMapPin(selectedPoi.id);
+      // 宽度铺满后，竖向居中长图，便于看到城内主体
+      requestAnimationFrame(() => {
+        ancientZoom = getAncientDefaultZoom(currentCity);
+        ancientPan = { x: 0, y: 0 };
+        applyAncientTransform();
+        if (selectedPoi) highlightMapPin(selectedPoi.id);
+      });
     };
 
     img.addEventListener('load', markReady);
